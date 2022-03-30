@@ -1,0 +1,3 @@
+[submodule "libft"]
+	path = libft
+	url = https://github.com/davidwkw/42KL-Libft2020.git
