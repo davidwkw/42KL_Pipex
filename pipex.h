@@ -29,7 +29,6 @@ void	error(char *msg);
 int		ft_open(const char *pathname, int flags, mode_t mode);
 void	ft_close(const int fd);
 void	ft_mv_fd(const int fd1, const int fd2);
-void	ft_freesplit(char **str_arr);
 void	ft_pipe(int pipefd[2]);
 
 #endif
