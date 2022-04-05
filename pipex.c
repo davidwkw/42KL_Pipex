@@ -6,7 +6,7 @@
 /*   By: kwang <kwang@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 13:06:56 by kwang             #+#    #+#             */
-/*   Updated: 2022/04/05 18:24:27 by kwang            ###   ########.fr       */
+/*   Updated: 2022/04/05 18:34:00 by kwang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,9 @@ static char	*search_append_path(char *name, char *envp[])
 				full_name = ft_strjoin(paths[i], temp);
 				if (access(full_name, F_OK | X_OK) == 0)
 					return (full_name);
+				free(full_name);
 			}
+			free(temp);
 			break;
 		}
 	}
