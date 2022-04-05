@@ -1,12 +1,11 @@
 SRCS =	pipex.c \
+		utils.c \
 
 OBJS = $(SRCS:.c=.o)
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror -I$(INCLUDES)
-
-INCLUDES = includes
+CFLAGS = -Wall -Wextra -Werror -g -I. -fsanitize=address
 
 LIBFTDIR = libft
 
@@ -23,7 +22,7 @@ $(NAME) : $(OBJS) $(LIBFT)
 	@echo "Creating $(NAME).."
 	@$(CC) $(CFLAGS) -o $@ $^
 
-bonus : ${NAME}
+bonus : $(NAME)
 
 clean :
 	@echo "Cleaning all .o files.."
