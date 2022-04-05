@@ -11,12 +11,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-
-enum
-{
-	false,
-	true
-};
+# include <stdbool.h>
 
 typedef struct s_subprocess
 {
