@@ -6,7 +6,7 @@
 /*   By: kwang <kwang@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 13:06:56 by kwang             #+#    #+#             */
-/*   Updated: 2022/04/05 19:06:15 by kwang            ###   ########.fr       */
+/*   Updated: 2022/04/05 21:10:54 by kwang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ static void	fork_execute(char *argv, char *envp[], t_subprocess *subprocess)
 			ft_mv_fd(subprocess->stdout_fd, STDOUT_FILENO);
 		}
 		args = ft_split(argv, ' ');
-		for (int i = 0; args[i]; i++)
-			printf("%s\n", args[i]);
 		args[0] = search_append_path(args[0], envp);
 		execve(args[0], args, envp);
 		error("Execve failed");
@@ -80,28 +78,20 @@ static int		heredoc(char *limiter)
 {
 	char	*line;
 	int		pipefd[2];
-	int		match;
-	int		read_num;
-	int		cmp_num;
 
 	if (pipe(pipefd) == -1)
 		error("Pipe failure\n");
-	read_num = get_next_line(0, &line);
-	if (ft_strlen(line) > ft_strlen(limiter))
-		cmp_num = ft_strlen(line);
-	else
-		cmp_num = ft_strlen(limiter);
-	match = ft_strncmp(line, limiter, cmp_num);
-	while (match != 0 && read_num > 0)
+	while (true)
 	{
-		write(pipefd[1], line, ft_strlen(line));
+		ft_putstr_fd("> ", STDOUT_FILENO);
+		if (get_next_line(0, &line) < 1)
+			break;
+		if (ft_strlen(line) == ft_strlen(limiter)
+			&& ft_strncmp(line, limiter, ft_strlen(limiter)) == 0)
+			break;
+		ft_putendl_fd(line, pipefd[1]);
 		free(line);
-		read_num = get_next_line(0, &line);
-		if (ft_strlen(line) > ft_strlen(limiter))
-			cmp_num = ft_strlen(line);
-		else
-			cmp_num = ft_strlen(limiter);
-		match = ft_strncmp(line, limiter, cmp_num);
+		line = NULL;
 	}
 	free(line);
 	close(pipefd[1]);
