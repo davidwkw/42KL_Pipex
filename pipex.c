@@ -6,7 +6,7 @@
 /*   By: kwang <kwang@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 13:06:56 by kwang             #+#    #+#             */
-/*   Updated: 2022/04/05 18:34:00 by kwang            ###   ########.fr       */
+/*   Updated: 2022/04/05 19:06:15 by kwang            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,26 @@ static int		heredoc(char *limiter)
 	int		pipefd[2];
 	int		match;
 	int		read_num;
+	int		cmp_num;
 
 	if (pipe(pipefd) == -1)
 		error("Pipe failure\n");
 	read_num = get_next_line(0, &line);
-	match = ft_strncmp(line, limiter, ft_strlen(line));
+	if (ft_strlen(line) > ft_strlen(limiter))
+		cmp_num = ft_strlen(line);
+	else
+		cmp_num = ft_strlen(limiter);
+	match = ft_strncmp(line, limiter, cmp_num);
 	while (match != 0 && read_num > 0)
 	{
 		write(pipefd[1], line, ft_strlen(line));
 		free(line);
 		read_num = get_next_line(0, &line);
-		match = ft_strncmp(line, limiter, ft_strlen(line));
+		if (ft_strlen(line) > ft_strlen(limiter))
+			cmp_num = ft_strlen(line);
+		else
+			cmp_num = ft_strlen(limiter);
+		match = ft_strncmp(line, limiter, cmp_num);
 	}
 	free(line);
 	close(pipefd[1]);
